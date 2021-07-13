@@ -19,7 +19,7 @@ sheet_obj = wb_obj.active
 # Loop for data from individual ticker symbols
 
 for i in range (16, 17):
-#Chooses from range input of tickers in a horisontal list from column 2 in excel file, where 'i' represents the loop of downwardgoing reads
+#Chooses from range input of tickers in a horisontal list from column 1 in excel file, where 'i' represents the loop of downwardgoing reads
     ticker = cell_obj = sheet_obj.cell(i,1).value
     
     # Gets key data metrics/ratios from specified range, via the api_key, and set to a period of annual/yearly (can also be quarterly)

@@ -1,0 +1,43 @@
+#imports
+import xlrd
+import xlwt 
+import openpyxl
+import pandas as pd
+#finans api
+import FundamentalAnalysis as fa
+#API KEY GOES HERE (DONT TOUCH)
+api_key = "53c275ee05d82c16bf61f7fed2c92f0c"
+
+# Workbook location and open
+# Give the location of the file
+path = "/Users/kt/Documents/Scraper/AUTOINVEST.xlsx"
+# To open - Opens excel wookbook with companies
+wb_obj = openpyxl.load_workbook(path)
+sheet_obj = wb_obj.active
+
+# Remember to adjust the range if more companies are added. First line of tickers / companies start at line #16
+# Loop for data from individual ticker symbols
+
+for i in range (16, 17):
+#Chooses from range input of tickers in a horisontal list from column 2 in excel file, where 'i' represents the loop of downwardgoing reads
+    ticker = cell_obj = sheet_obj.cell(i,1).value
+    
+    # Gets key data metrics/ratios from specified range, via the api_key, and set to a period of annual/yearly (can also be quarterly)
+    a = fa.key_metrics(ticker, api_key, period="annual")
+    
+    # Output from 'a' is a tabel with an index with key ratio names, the headers are in years
+    # The dataframe is set to use the column of 2020 / recent out of 10 years of output, to get relevant data
+    df = pd.DataFrame(a, columns = ['2020'])
+    
+    # The dataframe is then transposed from a vertical table to a horizontal table
+    df = df.transpose()
+
+    df.to_csv('RAWDATA.csv',header=True, index=True)
+    
+print ("done")
+
+
+# Notes
+# for if excel file instead of csv
+#    df = pd.DataFrame(data, columns = [ticker, '2020', '2019', '2018'])
+#    df.to_excel (r'/Users/kt/Documents/Scraper/RAWDATA.xlsx', index = True, header=True)
